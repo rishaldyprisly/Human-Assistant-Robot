@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd"> <html> <head> <h3
+align="center"> JASPER MANUAL CONTROL DASHBOARD</h3>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="height=device-height, width=420, user-scalable=yes" />
+        <title>MANUAL MODE</title>
+        <script type="text/javascript" src="/webiopi.js"></script>
+        <script type="text/javascript">
+        function init() {
+                var button;
+
+                button = webiopi().createButton("bt_up", "maju", go_forward, stop);
+                $("#up").append(button);
+
+                button = webiopi().createButton("bt_left", "kiri", turn_left, stop);
+                $("#middle").append(button);
+
+                button = webiopi().createButton("bt_stop", "X", stop);
+                $("#middle").append(button);
+
+                button = webiopi().createButton("bt_right", "kanan", turn_right, stop);
+                $("#middle").append(button);
+
+                button = webiopi().createButton("bt_cam_left", "Kamera Kanan", s_left, s_stop);
+                $("#up2").append(button);
+
+                button = webiopi().createButton("bt_cam_normal", "Kamera Tengah", s_normal, s_stop);
+                $("#up2").append(button);
+
+                button = webiopi().createButton("bt_up_s", "up", s_up, s_stop);
+                $("#up2").append(button);
+
+                button = webiopi().createButton("bt_cam_right", "Kamera Kiri", s_right, s_stop);
+                $("#up2").append(button);
+
+                button = webiopi().createButton("bt_down", "mundur", go_backward, stop);
+                $("#down").append(button);
+
+                button = webiopi().createButton("bt_take_left", "release1", take_1, s_stop);
+                $("#middle2").append(button);
+
+                button = webiopi().createButton("bt_release1_right", "take1", release_1, s_stop);
+                $("#middle2").append(button);
+
+                button = webiopi().createButton("bt_take2_left", "take2", take_2, s_stop);
+                $("#middle2").append(button);
+
+                button = webiopi().createButton("bt_release2_right", "release2", release_2, s_stop);
+                $("#middle2").append(button);
+
+                button = webiopi().createButton("bt_down_s", "down", s_down, s_stop);
+                $("#down2").append(button);
+
+                button = webiopi().createButton("bt_forwards_up", "forwards", s_forwards, s_stop);
+                $("#up1").append(button);
+
+                button = webiopi().createButton("bt_backs_down", "backs", s_backs, s_stop);
+                $("#down1").append(button);
+
+                button = webiopi().createButton("bt_left", "lefts", s_lefts, s_stop);
+                $("#middle1").append(button);
+
+                button = webiopi().createButton("bt_center", "center", s_center, s_stop);
+                $("#middle1").append(button);
+
+                button = webiopi().createButton("bt_right", "rights", s_rights, s_stop);
+                $("#middle1").append(button);
+
+
+
+ }
+
+        function go_forward() {
+                webiopi().callMacro("go_forward");
+        }
+
+        function go_backward() {
+                webiopi().callMacro("go_backward");
+        }
+
+        function turn_right() {
+                webiopi().callMacro("turn_right");
+        }
+
+        function turn_left() {
+                webiopi().callMacro("turn_left");
+        }
+
+        function stop() {
+                webiopi().callMacro("stop");
+        }
+
+        function s_left() {
+                webiopi().callMacro("left_s");
+        }
+
+        function s_right() {
+                webiopi().callMacro("right_s");
+        }
+        function s_normal() {
+                webiopi().callMacro("normal_s");
+        }
+
+        function take_1() {
+                webiopi().callMacro("take1");
+        }
+
+        function release_1() {
+                webiopi().callMacro("release1");
+        }
+
+        function take_2() {
+                webiopi().callMacro("take2");
+        }
+        function release_2() {
+                webiopi().callMacro("release2");
+        }
+
+        function s_up() {
+                webiopi().callMacro("up");
+        }
+
+        function s_down() {
+                webiopi().callMacro("down");
+        }
+
+        function s_forwards() {
+                webiopi().callMacro("forwards");
+        }
+
+        function s_backs() {
+                webiopi().callMacro("backs");
+        }
+
+        function s_lefts() {
+                webiopi().callMacro("lefts");
+        }
+
+        function s_rights() {
+                webiopi().callMacro("rights");
+        }
+
+        function s_center() {
+                webiopi().callMacro("center");
+        }
+
+        function s_stop() {
+                webiopi().callMacro("s_stop");
+        }
+
+        webiopi().ready(init);
+
+
+</script>
+        <style type="text/css">
+
+                button {
+                        -webkit-border-radius: 28;
+                        -moz-border-radius: 28;
+                        border-radius: 28px;
+                        font-family: Arial;
+                        text-align: center;
+                        color: #ffffff;
+                        font-size: 12px;
+                        background: #3498db;
+                        padding: 16px 58px 35px 25px;
+                        text-decoration: none;
+}
+
+                button:hover {
+                        background: #3cb0fd;
+                        background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+                        background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+                        background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+                        background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+                        background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+                        text-decoration: none;
+}
+        </style> </head> <body>
+        <div id="content" align="center">
+               <img style="width: 820px; margin-left:auto; margin-right:auto;" height="400" src="http://172.20.10.2:8080/?action=stream"><br/>
+<table style="height: 271px; margin-left: auto; margin-right: auto;" width="964">
+<tbody>
+<tr>
+<td>&nbsp;<div id="up" align="center"></div>
+                <div id="middle" align="center"></div>
+                <div id="down" align="center"></div></td>
+<td>&nbsp;<div id="gripper" align="center"></div>
+                <div id="up2" align="center"></div>
+                <div id="middle2" align="center"></div>
+                <div id="down2" align="center"></div></td>
+<td>&nbsp;<div id="servo" align="center"></div>
+                <div id="up1" align="center"></div>
+                <div id="middle1" align="center"></div>
+                <div id="down1" align="center"></div></td>
+</tr>
+</tbody>
+</table>
+        </div> </body> </html>
+
+
+
+
