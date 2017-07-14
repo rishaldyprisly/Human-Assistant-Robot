@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import RPi.GPIO as GPIO
+import pigpio
 # Memanggil library GPIO
 #GPIO = RPiGPIO.GPIO
 
