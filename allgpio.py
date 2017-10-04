@@ -1,117 +1,132 @@
-# Import modul webiopi
+#                  MANUAL CONTROL                   #
+#      AUTHOR : MOCHAMAD RISHALDY PRISLIYANTO       #
+#                      2017                         #
+#             LICENSE : PUBLIC DOMAIN               #
+#               www.sparkintech.com                 #
+#           www.rishaldy.sparkintech.com            #
+#   PLEASE READ THE README FOR FURTHER INFORMATION  #
+
+from __future__ import division
 import webiopi
 import os
 import sys
 import time
-import RPi.GPIO as GPIO
 import pigpio
-# Memanggil library GPIO
-#GPIO = RPiGPIO.GPIO
+import Adafruit_PCA9685
+pi = pigpio.pi()
+pwm = Adafruit_PCA9685.PCA9685()
 
-# -------------------------------------------------- #
-# Mendefinisikan GPIO                                #
-# -------------------------------------------------- #
-GPIO.setmode(GPIO.BCM)
-
-# GPIO untuk Motor Kiri
 L1=22 # H-Bridge Input Pin 1
 L2=23 # H-Bridge Input Pin 2
 
 R1=24 # H-Bridge Input Pin 3
 R2=25 # H-Bridge Input Pin 4
 
-#SERVO GPIO
-S1=18 #CAMERA USE
-S2=02 #GRIPPER BESAR
-S3=03 #GRIPPER KECIL
-S4=17 #ANGKAT TURUN ARM
-S5=04 #MAJU MUNDUR ARM
-S6=15 #KIRI KANAN ARM
+pi.set_mode(L1, pigpio.OUTPUT)
+pi.set_mode(L2, pigpio.OUTPUT)
+pi.set_mode(R1, pigpio.OUTPUT)
+pi.set_mode(R2, pigpio.OUTPUT)
 
 
 # -------------------------------------------------- #
-# Membuat Fungsi Motor Kiri                          #
+#                    PWM SETUP                       #
+# -------------------------------------------------- #
+servo_min = 150  # Min pulse length out of 4096
+servo_max = 600  # Max pulse length out of 4096
+servo_mid = 375
+servo_take = 50
+servo_max1 = 550
+servo_min1 = 200
+# Helper function to make setting a servo pulse width simpler.
+def set_servo_pulse(channel, pulse):
+    pulse_length = 1000000    # 1,000,000 us per second
+    pulse_length //= 60       # 60 Hz
+    print('{0}us per period'.format(pulse_length))
+    pulse_length //= 4096     # 12 bits of resolution
+    print('{0}us per bit'.format(pulse_length))
+    pulse *= 1000
+    pulse //= pulse_length
+    pwm.set_pwm(channel, 0, pulse)
+
+pwm.set_pwm_freq(60)
+# -------------------------------------------------- #
+#                  MOTOR FUNCTION                    #
 # -------------------------------------------------- #
 
 def left_stop():
-    GPIO.output(L1, GPIO.LOW)
-
+    pi.write(L1, 0)
+    pi.write(L2, 0)
 def left_forward():
-    GPIO.output(L1, GPIO.HIGH)
-    GPIO.output(L2, GPIO.LOW)
+    pi.write(L1, 1)
+    pi.write(L2, 0)
 
 def left_backward():
-    GPIO.output(L1, GPIO.LOW)
-    GPIO.output(L2, GPIO.HIGH)
+    pi.write(L1, 0)
+    pi.write(L2, 1)
 
 def right_stop():
-    GPIO.output(R1, GPIO.LOW)
-    GPIO.output(R2, GPIO.LOW)
+    pi.write(R1, 0)
+    pi.write(R2, 0)
 
 def right_forward():
-    GPIO.output(R1, GPIO.HIGH)
-    GPIO.output(R2, GPIO.LOW)
+    pi.write(R1, 1)
+    pi.write(R2, 0)
 
 def right_backward():
-    GPIO.output(R1, GPIO.LOW)
-    GPIO.output(R2, GPIO.HIGH)
+    pi.write(R1, 0)
+    pi.write(R2, 1)
 
+# -------------------------------------------------- #
+#                 SERVOS FUNCTION                    #
+# -------------------------------------------------- #
 def servo_left():
-    p.ChangeDutyCycle(12.5)
-#time.sleep(0.3)
-
+    pwm.set_pwm(0, 0, servo_min)
+    time.sleep(1)
 def servo_right():
-    p.ChangeDutyCycle(2.5)
-#time.sleep(0.3)
+    pwm.set_pwm(0, 0, servo_max)
+#pi.set_servo_pulsewidth(S1, 2000)
 
 def servo_normal():
-    #p.normal(7.5)
-    #time.sleep(0.3)
-    p.ChangeDutyCycle(6.7)
-    time.sleep(0.3)
+    pwm.set_pwm(0, 0, servo_mid)
+#pi.set_servo_pulsewidth(S1, 1500)
 
 def servo_take1():
-    p1.ChangeDutyCycle(6.7)
+    pwm.set_pwm(1, 0, servo_min)
 
 def servo_release1():
-    p1.ChangeDutyCycle(2.5)
+    pwm.set_pwm(1, 0, servo_max)
 
 def servo_take2():
-    p2.ChangeDutyCycle(6.7)
+    pwm.set_pwm(2, 0, servo_max)
 
 def servo_release2():
-
-def servo_take2():
-    p2.ChangeDutyCycle(6.7)
-
-def servo_release2():
-    p2.ChangeDutyCycle(2.5)
+    pwm.set_pwm(2, 0, servo_min)
 
 def servo_up():
-    p3.ChangeDutyCycle(12.5)
+    pwm.set_pwm(3, 0, servo_max)
 
 def servo_down():
-    p3.ChangeDutyCycle(6.7)
+    pwm.set_pwm(3, 0, servo_down)
 
 def servo_forwards():
-    p4.ChangeDutyCycle(2.5)
+    pwm.set_pwm(4, 0, servo_max1)
 
 def servo_backs():
-    p4.ChangeDutyCycle(12.5)
+    pwm.set_pwm(4, 0, servo_min1)
 
 def servo_lefts():
-    p5.ChangeDutyCycle(12.5)
+    pwm.set_pwm(5, 0, min)
 
 def servo_center():
-    p5.ChangeDutyCycle(6.7)
+    pwm.set_pwm(5, 0, servo_mid)
 
 def servo_rights():
-    p5.ChangeDutyCycle(2.5)
+    pwm.set_pwm(5, 0, servo_max)
+    time.sleep(1)
 
 # -------------------------------------------------- #
-# Definisi Macro untuk JavaScript                    #
+#                JAVASCRIPT FUNCTION                 #
 # -------------------------------------------------- #
-
 def go_forward():
     left_forward()
     right_forward()
@@ -119,7 +134,6 @@ def go_forward():
 def go_backward():
     left_backward()
     right_backward()
-
 def turn_left():
     left_forward()
     right_backward()
@@ -127,6 +141,7 @@ def turn_left():
 def turn_right():
     left_backward()
     right_forward()
+
 def stop():
     left_stop()
     right_stop()
@@ -172,41 +187,18 @@ def rights():
 
 def center():
     servo_center()
-# Setup GPIO
-GPIO.setup(L1, GPIO.OUT)
-GPIO.setup(L2, GPIO.OUT)
 
-GPIO.setup(R1, GPIO.OUT)
-GPIO.setup(R2, GPIO.OUT)
-
-GPIO.setup(S1, GPIO.OUT)
-p = GPIO.PWM(S1,50)
-p.start(7.5)
-
-GPIO.setup(S2, GPIO.OUT)
-p1 = GPIO.PWM(S2,50)
-p1.start(12.5)
-
-GPIO.setup(S3, GPIO.OUT)
-p2 = GPIO.PWM(S3,50)
-p2.start(12.5)
-
-GPIO.setup(S4, GPIO.OUT)
-p3 = GPIO.PWM(S4,50)
-p3.start(12.5)
-
-GPIO.setup(S5, GPIO.OUT)
-p4 = GPIO.PWM(S5,50)
-p4.start(12.5)
-
-GPIO.setup(S6, GPIO.OUT)
-p5 = GPIO.PWM(S6,50)
-p5.start(7.5)
-
-# Menempatkan web server pada port 8000, dan membuat ID dan password
+def s_stop():
+    servo_stop()
+    
+# -------------------------------------------------- #
+#            WEBSERVER AND USER AUTH SETUP           #
+# -------------------------------------------------- #
 server = webiopi.Server(port=9000, login="jasper", password="rishaldy")
 
-# Mendaftarkan Macro untuk dipanggil pada javascript di HTML
+# -------------------------------------------------- #
+#              JAVASCRIPT TO HTML MACROS             #
+# -------------------------------------------------- #
 
 server.addMacro(go_forward)
 server.addMacro(go_backward)
@@ -216,37 +208,35 @@ server.addMacro(stop)
 
 server.addMacro(left_s)
 server.addMacro(right_s)
+server.addMacro(normal_s)
 
 server.addMacro(take1)
 server.addMacro(release1)
 
 server.addMacro(take2)
+server.addMacro(release2)
+
+server.addMacro(up)
+server.addMacro(down)
+
+server.addMacro(forwards)
+server.addMacro(backs)
+server.addMacro(s_stop)
+server.addMacro(lefts)
 server.addMacro(rights)
 server.addMacro(center)
 # -------------------------------------------------- #
-# Me-Loop Program Web Server                         #
+#               LOOP THE WEBSERVER                   #
 # -------------------------------------------------- #
 
 # Menjalankan Loop sampai CTRL+C ditekan atau Raspberry direstart
 webiopi.runLoop()
 
 # -------------------------------------------------- #
-# Mematikan Program Web Server                                   #
+#             SHUTDOWN THE WEB SERVER                #
 # -------------------------------------------------- #
 
 # Stop Web server
 server.stop()
 
-# Reset GPIO Pins
-GPIO.setup(L1, GPIO.IN)
-GPIO.setup(L2, GPIO.IN)
 
-GPIO.setup(R1, GPIO.IN)
-GPIO.setup(R2, GPIO.IN)
-
-GPIO.setup(S1, GPIO.IN)
-GPIO.setup(S2, GPIO.IN)
-GPIO.setup(S3, GPIO.IN)
-GPIO.setup(S4, GPIO.IN)
-GPIO.setup(S5, GPIO.IN)
-GPIO.setup(S6, GPIO.IN)
