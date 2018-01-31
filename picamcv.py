@@ -1,4 +1,6 @@
 # import the necessary packages
+#Rishaldy Prisly, Face Detect Using Picam
+# https://sparks.id
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
